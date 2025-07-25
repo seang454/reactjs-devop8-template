@@ -3,7 +3,7 @@ on:
     branches: [ "master" ]
 
 env:
-  IMAGE_NAME: reactjs-fullstack-g1
+  IMAGE_NAME: reactjs-fullstack
 jobs:
   build-and-push:
   #shared runner
