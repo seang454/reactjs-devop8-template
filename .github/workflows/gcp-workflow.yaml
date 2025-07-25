@@ -1,11 +1,12 @@
 on:
   push:
-    branches: [ "123424" ]
+    branches: [ "master" ]
 
 env:
-  IMAGE_NAME: reactjs-image-gcp
+  IMAGE_NAME: reactjs-fullstack-g1
 jobs:
   build-and-push:
+  #shared runner
     runs-on: ubuntu-latest 
     environment: DOCKER_REPOSITORY
     steps: 
@@ -29,7 +30,7 @@ jobs:
         if: always()
         run: |
           docker logout 
-  deploy-service: 
+  # deploy-service: 
     needs: build-and-push
     runs-on: ubuntu-latest
     environment: GCP
