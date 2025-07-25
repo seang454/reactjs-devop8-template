@@ -31,36 +31,36 @@ jobs:
         run: |
           docker logout 
   # deploy-service: 
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    environment: GCP
-    steps: 
-      - name: Checkout Code 
-        uses: actions/checkout@v3
-      - name: Use with SHA 
-        run: | 
-          echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
-      - name: Deploy via SSH to GCP VM 
-        uses: appleboy/ssh-action@v1.0.0
-        with: 
-          host: ${{ secrets.GCP_IP }}
-          username: ${{ secrets.GCP_USER }}
-          key: ${{ secrets.GCP_PRIVATE_KEY }}
-          envs: TAG
-          script: |
-            echo "Current location is $(pwd) "
+  #   needs: build-and-push
+  #   runs-on: ubuntu-latest
+  #   environment: GCP
+  #   steps: 
+  #     - name: Checkout Code 
+  #       uses: actions/checkout@v3
+  #     - name: Use with SHA 
+  #       run: | 
+  #         echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
+  #     - name: Deploy via SSH to GCP VM 
+  #       uses: appleboy/ssh-action@v1.0.0
+  #       with: 
+  #         host: ${{ secrets.GCP_IP }}
+  #         username: ${{ secrets.GCP_USER }}
+  #         key: ${{ secrets.GCP_PRIVATE_KEY }}
+  #         envs: TAG
+  #         script: |
+  #           echo "Current location is $(pwd) "
             
-            echo "remove the container "
-            docker stop my-app || true 
-            docker rm my-app || true 
+  #           echo "remove the container "
+  #           docker stop my-app || true 
+  #           docker rm my-app || true 
 
-            echo "Pulling the updating image "
-            docker pull "69966/${{env.IMAGE_NAME }}:${{ env.TAG }}"
+  #           echo "Pulling the updating image "
+  #           docker pull "69966/${{env.IMAGE_NAME }}:${{ env.TAG }}"
 
-            echo "Running new containers "
-            docker run -d \
-              --name my-app \
-              -p 3000:80 \
-              "69966/${{env.IMAGE_NAME }}:${{ env.TAG }}"
+  #           echo "Running new containers "
+  #           docker run -d \
+  #             --name my-app \
+  #             -p 3000:80 \
+  #             "69966/${{env.IMAGE_NAME }}:${{ env.TAG }}"
             
   
