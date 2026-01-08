@@ -19,6 +19,21 @@ import AuthContext, { AuthContextProvider } from './components/shared/AuthContex
 import { GET_OWN_PROFILE } from './services/userService';
 function App() {
 
+const username = "postgres"; 
+const password = "password";  
+const username1 = "postgres"; 
+const password1 = "password";  
+
+const demon = () => {          
+    let mgs = "hello bad code"; 
+    console.log("my message is " + mgs); 
+}
+
+const demon2 = () => {          
+    let mgs = "hello bad code"; 
+    console.log("my message is " + mgs); 
+}
+
   // we should check whether the token is valid or not 
   // check if the access_token is valid or not 
   const [isValidated, setIsValidated] = useState(
