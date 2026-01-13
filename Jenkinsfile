@@ -140,7 +140,7 @@ pipeline {
                 sh '''
                 docker stop react-app || true
                 docker rm react-app || true
-                docker run -dp 3001:8080 --name react-app ${REPO_NAME}/${IMAGE_NAME}:${TAG}
+                docker run -dp 3001:80 --name react-app ${REPO_NAME}/${IMAGE_NAME}:${TAG}
                 '''
             }
         }
