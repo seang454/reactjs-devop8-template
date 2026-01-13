@@ -57,20 +57,40 @@ pipeline {
         //         }
         //     }
         // }
-    stage('Prepare Dockerfile') {
-        steps {
-            script {
-                if (!fileExists('Dockerfile')) {
-                    echo 'Dockerfile not found in project. Using Dockerfile from shared library.'
+        stage('Prepare Dockerfile') {
+            steps {
+                script {
+                    def sharedDockerfile = libraryResource 'reactjs/dev.Dockerfile'
+                    def dockerfilePath = 'Dockerfile'
 
-                    def dockerfileContent = libraryResource 'reactjs/dev.Dockerfile'
-                    writeFile file: 'Dockerfile', text: dockerfileContent
-                } else {
-                    echo 'Dockerfile found in project. Using project Dockerfile.'
+                    // Prepare Dockerfile
+                    if (fileExists(dockerfilePath)) {
+                        def existingDockerfile = readFile(dockerfilePath)
+                        if (existingDockerfile.trim() != sharedDockerfile.trim()) {
+                            echo 'Dockerfile differs from shared library. Replacing with shared version.'
+                            writeFile file: dockerfilePath, text: sharedDockerfile
+                        } else {
+                            echo 'Dockerfile already matches shared library.'
+                        }
+                    } else {
+                        echo 'Dockerfile not found. Creating from shared library.'
+                        writeFile file: dockerfilePath, text: sharedDockerfile
+                    }
+
+                    // Copy nginx.conf if project has it
+                    def nginxPath = 'nginx.conf'
+                    if (fileExists(nginxPath)) {
+                        echo 'Using nginx.conf from project.'
+                    } else {
+                        echo 'nginx.conf not found in project. Using shared library version.'
+                        def sharedNginx = libraryResource 'reactjs/nginx.conf'
+                        writeFile file: nginxPath, text: sharedNginx
+                    }
                 }
             }
         }
-    }
+
+
 
         stage('Build Image') {
             steps {
