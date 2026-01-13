@@ -63,7 +63,7 @@ pipeline {
                 if (!fileExists('Dockerfile')) {
                     echo 'Dockerfile not found in project. Using Dockerfile from shared library.'
 
-                    def dockerfileContent = libraryResource 'docker/Dockerfile'
+                    def dockerfileContent = libraryResource 'reactjs/dev.Dockerfile'
                     writeFile file: 'Dockerfile', text: dockerfileContent
                 } else {
                     echo 'Dockerfile found in project. Using project Dockerfile.'
